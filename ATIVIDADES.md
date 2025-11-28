@@ -391,7 +391,7 @@ completo de compilação do GCC (Pré-processamento, Compilação, Montagem, Lig
     * *Comando de Compilação:* `g++ -o myblkid myblkid.cpp -lblkid` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal ao rodar sudo ./myblkid) 
+        UUID=64c5dfea-ac81-4541-881d-caa54ad4449d
         ``` 
     * *Breve Descrição:* (A saída corresponde ao UUID da sua partição `sda1` que você viu no `lsblk -f`?) 
  
@@ -424,7 +424,7 @@ número da sequência.
     * *Comando de Compilação:* `g++ -o calcfb calcfb.cpp` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal ao rodar ./calcfb) 
+        F4: 3 
         ``` 
     * *Breve Descrição:* (A saída foi `F4: 3`? Explique por que o resultado é 3 e não 4, com base na 
 sequência de Fibonacci). 
@@ -460,7 +460,8 @@ concorrentemente com a thread principal (`main`).
     * *Comando de Compilação:* `g++ thread.cpp -o thread -pthread -std=c++11` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal ao rodar ./thread) 
+        A 'main' executou...
+A thread está falando: Olá 
         ``` 
     * *Breve Descrição:* (Qual linha imprimiu primeiro, "A 'main' executou..." ou "A thread está 
 falando..."? O que `t1.join()` faz?) 
@@ -515,7 +516,8 @@ memória separados.
     * *Comando de Compilação:* `g++ -o usefork usefork.cpp` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui as DUAS linhas de saída do seu terminal) 
+        Processo pai: Variavel Global: 2 Variável Funcao: 20
+userlinux@debian:/tmp$ Processo filho:  Variavel Global: 3 Variável Funcao: 21 
         ``` 
     * *Breve Descrição:* (Explique por que a `variavelGlobal` e a `variavelFuncao` têm valores diferentes 
 para o pai e para o filho. Qual processo (pai ou filho) terminou primeiro na sua execução?) 
@@ -561,7 +563,10 @@ continuar.
     * *Comando de Compilação:* `g++ -o usewait usewait.cpp` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal) 
+        Pai esperando o filho terminar...
+Saindo do processo filho.
+PID do pai: 805
+PID do filho (retornado por wait): 806 
         ``` 
     * *Breve Descrição:* (A linha "Pai esperando..." sempre aparece antes de "PID do pai..."? Por que o 
 PID do filho é impresso pelo processo-pai?) 
@@ -609,7 +614,10 @@ saída* (status) do filho, usando `WIFEXITED` e `WEXITSTATUS`.
     * *Comando de Compilação:* `gcc -o usewait_exit usewait_exit.cpp` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal) 
+        Saindo do processo filho.
+WEXIT: 1
+PID do pai: 813
+PID do filho: 814 
         ``` 
     * *Breve Descrição:* (Qual foi o status de saída impresso pelo `WEXIT`? Por que ele imprimiu esse 
 valor específico?) 
@@ -655,7 +663,11 @@ filhos, e então espera por *cada um* deles especificamente, coletando seus cód
     * *Comando de Compilação:* `g++ -o waitpid waitpid.cpp` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui as 5 linhas de saída do seu terminal) 
+        O filho 834 terminou com o status: 100
+O filho 835 terminou com o status: 101
+O filho 836 terminou com o status: 102
+O filho 837 terminou com o status: 103
+O filho 838 terminou com o status: 104 
         ``` 
     * *Breve Descrição:* (Os PIDs dos filhos apareceram em ordem? Os códigos de status (100-104) 
 apareceram em ordem? O que `waitpid()` faz de diferente do `wait()`?) 
@@ -680,7 +692,34 @@ inseguro) para `fork + exec + wait`. O programa C++ pausa, executa um comando de
     * *Comando de Compilação:* `g++ -o system system.cpp` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal) 
+        total 292
+-rwxr-xr-x 1 userlinux userlinux 16000 Nov 27 21:39 calcfb
+-rw-r--r-- 1 userlinux userlinux   226 Nov 27 21:39 calcfb.cpp
+-rwxr-xr-x 1 userlinux userlinux 30840 Nov 27 20:39 devices
+-rw-r--r-- 1 userlinux userlinux   643 Nov 27 20:39 devices.cpp
+-rw-r--r-- 1 userlinux userlinux   135 Nov 27 21:38 fibonacci.h
+-rwxr-xr-x 1 userlinux userlinux 16528 Nov 27 21:18 getuuid
+-rw-r--r-- 1 userlinux userlinux  1768 Nov 27 21:17 getuuid.c
+-rw-r--r-- 1 userlinux userlinux  1062 Sep  7  2022 install.py
+-rwxr-xr-x 1 userlinux userlinux 24168 Nov 27 21:36 myblkid
+-rw-r--r-- 1 userlinux userlinux   634 Nov 27 21:36 myblkid.cpp
+-rwxr-xr-x 1 userlinux userlinux 16600 Nov 27 22:41 system
+-rw-r--r-- 1 userlinux userlinux   204 Nov 27 22:41 system.cpp
+drwx------ 3 root      root       4096 Nov 27 20:19 systemd-private-c53c1f7f007c4639b1937bd6a5755d10-systemd-logind.service-QBzZkA
+drwx------ 3 root      root       4096 Nov 27 20:19 systemd-private-c53c1f7f007c4639b1937bd6a5755d10-systemd-timesyncd.service-Rx4Lax
+-rwxr-xr-x 1 userlinux userlinux 15960 Nov 27 21:21 teste
+-rw-r--r-- 1 userlinux userlinux   136 Nov 27 21:21 teste.c
+-rwxr-xr-x 1 userlinux userlinux 26288 Nov 27 21:45 thread
+-rw-r--r-- 1 userlinux userlinux   457 Nov 27 21:44 thread.cpp
+-rwxr-xr-x 1 userlinux userlinux 17496 Nov 27 21:58 usefork
+-rw-r--r-- 1 userlinux userlinux  1000 Nov 27 21:57 usefork.cpp
+-rwxr-xr-x 1 userlinux userlinux 16800 Nov 27 22:14 usewait
+-rw-r--r-- 1 userlinux userlinux   779 Nov 27 22:14 usewait.cpp
+-rwxr-xr-x 1 userlinux userlinux 16272 Nov 27 22:16 usewait_exit
+-rw-r--r-- 1 userlinux userlinux   947 Nov 27 22:16 usewait_exit.cpp
+-rwxr-xr-x 1 userlinux userlinux 16792 Nov 27 22:19 waitpid
+-rw-r--r-- 1 userlinux userlinux   773 Nov 27 22:19 waitpid.cpp
+Executado 
         ``` 
     * *Breve Descrição:* (O que apareceu na tela? A lista de arquivos (`ls -l`) apareceu *antes* ou 
 *depois* da palavra "Executado"? Por quê?) 
@@ -719,7 +758,35 @@ processá-la linha por linha.
     * *Comando de Compilação:* `g++ -o pop pop.cpp` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal) 
+        Linha: total 316
+Linha: -rwxr-xr-x 1 userlinux userlinux 16000 Nov 27 21:39 calcfb
+Linha: -rw-r--r-- 1 userlinux userlinux   226 Nov 27 21:39 calcfb.cpp
+Linha: -rwxr-xr-x 1 userlinux userlinux 30840 Nov 27 20:39 devices
+Linha: -rw-r--r-- 1 userlinux userlinux   643 Nov 27 20:39 devices.cpp
+Linha: -rw-r--r-- 1 userlinux userlinux   135 Nov 27 21:38 fibonacci.h
+Linha: -rwxr-xr-x 1 userlinux userlinux 16528 Nov 27 21:18 getuuid
+Linha: -rw-r--r-- 1 userlinux userlinux  1768 Nov 27 21:17 getuuid.c
+Linha: -rw-r--r-- 1 userlinux userlinux  1062 Sep  7  2022 install.py
+Linha: -rwxr-xr-x 1 userlinux userlinux 24168 Nov 27 21:36 myblkid
+Linha: -rw-r--r-- 1 userlinux userlinux   634 Nov 27 21:36 myblkid.cpp
+Linha: -rwxr-xr-x 1 userlinux userlinux 16624 Nov 27 23:11 pop
+Linha: -rw-r--r-- 1 userlinux userlinux   598 Nov 27 23:11 pop.cpp
+Linha: -rwxr-xr-x 1 userlinux userlinux 16600 Nov 27 22:41 system
+Linha: -rw-r--r-- 1 userlinux userlinux   204 Nov 27 22:41 system.cpp
+Linha: drwx------ 3 root      root       4096 Nov 27 20:19 systemd-private-c53c1f7f007c4639b1937bd6a5755d10-systemd-logind.service-QBzZkA
+Linha: drwx------ 3 root      root       4096 Nov 27 20:19 systemd-private-c53c1f7f007c4639b1937bd6a5755d10-systemd-timesyncd.service-Rx4Lax
+Linha: -rwxr-xr-x 1 userlinux userlinux 15960 Nov 27 21:21 teste
+Linha: -rw-r--r-- 1 userlinux userlinux   136 Nov 27 21:21 teste.c
+Linha: -rwxr-xr-x 1 userlinux userlinux 26288 Nov 27 21:45 thread
+Linha: -rw-r--r-- 1 userlinux userlinux   457 Nov 27 21:44 thread.cpp
+Linha: -rwxr-xr-x 1 userlinux userlinux 17496 Nov 27 21:58 usefork
+Linha: -rw-r--r-- 1 userlinux userlinux  1000 Nov 27 21:57 usefork.cpp
+Linha: -rwxr-xr-x 1 userlinux userlinux 16800 Nov 27 22:14 usewait
+Linha: -rw-r--r-- 1 userlinux userlinux   779 Nov 27 22:14 usewait.cpp
+Linha: -rwxr-xr-x 1 userlinux userlinux 16272 Nov 27 22:16 usewait_exit
+Linha: -rw-r--r-- 1 userlinux userlinux   947 Nov 27 22:16 usewait_exit.cpp
+Linha: -rwxr-xr-x 1 userlinux userlinux 16792 Nov 27 22:19 waitpid
+Linha: -rw-r--r-- 1 userlinux userlinux   773 Nov 27 22:19 waitpid.cpp
         ``` 
     * *Breve Descrição:* (Qual a diferença da saída deste programa para a saída do `system.cpp`? O 
 que o `popen` permitiu fazer com a saída do `ls -l`?) 
@@ -757,7 +824,10 @@ Este programa entra em loop infinito, mas se o usuário pressionar `Ctrl+C` (que
     * *Comando de Compilação:* `g++ -o receivesignal receivesignal.cpp` 
     * *Saída da Execução:* (Deixe o programa rodar por 3 segundos e então pressione `Ctrl+C`) 
         ```bash 
-        (Cole aqui a saída exata do seu terminal) 
+        Dentro do laço de repetição infinito.
+Dentro do laço de repetição infinito.
+Dentro do laço de repetição infinito.
+^CProcesso será interrompido pelo sinal: (2). 
         ``` 
     * *Breve Descrição:* (O que aconteceu quando você pressionou `Ctrl+C`? O programa fechou 
 silenciosamente ou imprimiu a mensagem da `signal_handler`? Qual é o número do sinal `SIGINT`?) 
@@ -792,7 +862,18 @@ Este programa é similar ao anterior, mas usa `SIG_IGN` para se tornar imune ao 
     * *Saída da Execução:* (Pressione `Ctrl+C` várias vezes. Para parar, use `Ctrl+\` (SIGQUIT) ou `kill -9` 
 de outro terminal). 
         ```bash 
-        (Cole aqui a saída exata do seu terminal) 
+        Estou em loop imune... (1)
+Estou em loop imune... (2)
+Estou em loop imune... (3)
+^CEstou em loop imune... (4)
+^CEstou em loop imune... (5)
+^CEstou em loop imune... (6)
+Estou em loop imune... (7)
+Estou em loop imune... (8)
+Estou em loop imune... (9)
+Estou em loop imune... (10)
+Estou em loop imune... (11)
+^\Quit
         ``` 
     * *Breve Descrição:* (O que aconteceu quando você pressionou `Ctrl+C`? O programa parou? Como 
 você conseguiu parar o programa?) 
@@ -878,7 +959,12 @@ usando `kill()`. É similar ao `raise()`, mas requer que o processo saiba o seu 
     * *Comando de Compilação:* `g++ -o killsignal killsignal.cpp` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal) 
+        Dentro do laço de repetição infinito.
+Dentro do laço de repetição infinito.
+Dentro do laço de repetição infinito.
+Dentro do laço de repetição infinito.
+Dentro do laço de repetição infinito.
+Auto-sinal recebido: (2). 
         ``` 
     * *Breve Descrição:* (O que aconteceu após 5 segundos? Qual o número do sinal `SIGUSR1` que 
 apareceu na saída?) 
@@ -945,7 +1031,13 @@ sinal de volta para o pai (`SIGUSR1`).
     * *Comando de Compilação:* `g++ -o forksignal forksignal.cpp` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal) 
+        Processo filho aguardando sinal...
+Pai enviando sinal para o filho 908.
+Processo pai aguardando resposta...
+Processo (FILHO) recebeu sinal: (10).
+Filho enviando sinal de volta ao pai...
+Processo (PAI) recebeu sinal: (10).
+Pai terminando. 
         ``` 
     * *Breve Descrição:* (Descreva a ordem dos eventos. O pai enviou o sinal? O filho recebeu? O filho 
 enviou de volta? O que o comando `pause()` fez em ambos os processos?) 
@@ -981,7 +1073,9 @@ enviou de volta? O que o comando `pause()` fez em ambos os processos?)
     * *Comando de Compilação:* `g++ -o resolveaied resolveaied.cpp` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal ao rodar ./resolveaied) 
+        Name: aied.com.br
+Alias: www.aied.com.br
+Address: 212.1.209.207 
         ``` 
     * *Breve Descrição:* (Qual endereço IP foi retornado para `www.aied.com.br`?) 
  
@@ -1013,7 +1107,8 @@ servidor remoto (`aied.com.br`). Requer a biblioteca SFML.
     * *Comando de Compilação:* `g++ -o testport testport.cpp -lsfml-network -lsfml-system` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal ao rodar ./testport) 
+        Testando Porta 80: aied.com.br
+Porta está ABERTA 
         ``` 
     * *Breve Descrição:* (A porta 80 (HTTP) do servidor `aied.com.br` estava aberta ou fechada?) 
  
@@ -1060,7 +1155,7 @@ servidor remoto (`aied.com.br`). Requer a biblioteca SFML.
     * *Comando de Compilação:* `g++ -o getcurl getcurl.cpp -lcurl` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal ao rodar ./getcurl) 
+        Download concluído com sucesso para /tmp/output_image.iso 
         ``` 
     * *Breve Descrição:* (O programa reportou sucesso? Verifique com `ls -lh /tmp/output_image.iso` se 
 o arquivo realmente foi baixado e qual o seu tamanho.) 
@@ -1109,7 +1204,19 @@ servidor web usando o método `POST` com a `libcurl`.
     * *Comando de Compilação:* `g++ -o postjson postjson.cpp -lcurl` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal ao rodar ./postjson) 
+        <!DOCTYPE html>
+<html style="height:100%">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title> 301 Moved Permanently
+</title><style>@media (prefers-color-scheme:dark){body{background-color:#000!important}}</style></head>
+<body style="color: #444; margin:0;font: normal 14px/20px Arial, Helvetica, sans-serif; height:100%; background-color: #fff;">
+<div style="height:auto; min-height:100%; ">     <div style="text-align: center; width:800px; margin-left: -400px; position:absolute; top: 30%; left:50%;">
+        <h1 style="margin:0; font-size:150px; line-height:150px; font-weight:bold;">301</h1>
+<h2 style="margin-top:20px;font-size: 30px;">Moved Permanently
+</h2>
+<p>The document has been permanently moved.</p>
+</div></div></body></html> 
         ``` 
     * *Breve Descrição:* (O servidor `echo.php` retornou o mesmo JSON que você enviou? O que isso 
 prova sobre o método `POST`?) 
@@ -1152,7 +1259,10 @@ http://www.aied.com.br/linux/download/output_image.iso)*
 parar o loop) 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal ao rodar o script) 
+        curl: (3) bad range in URL position 2:
+[http://www.aied.com.br/linux/download/output_image.iso](http://www.aied.com.br/linux/download/output_image.iso)
+ ^
+Loop esperando 30s...
         ``` 
     * *Breve Descrição:* (O `curl` baixou o arquivo? O que o `xargs` fez? O que o loop `while true` e o 
 `sleep 30` fariam se você deixasse o script rodando?) 
