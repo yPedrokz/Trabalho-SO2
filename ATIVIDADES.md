@@ -22,9 +22,12 @@ texto dos comandos de validação solicitados. **Não use imagens (printscreens)
 ### Capítulo 6: Práticas de Discos e Montagem 
  
 #### Prática 8b65b431 01 (Livro-Texto p. 171) 
-* **Resumo da Prática:** (Descreva brevemente o que você fez: adição do disco, 
-particionamento com `fdisk`, formatação com `mkfs.ext4` e configuração da montagem 
-automática no `/etc/fstab` para o diretório `/backup`). 
+* **Resumo da Prática:** (Primeiro adicionei um novo disco pelo VirtualBox e reiniciei a máquina.
+* No Debian, usei o comando lsblk para descobrir qual era o novo dispositivo e, com fdisk, criei
+* uma partição primária nele. Depois formatei essa partição com mkfs.ext4 e criei o diretório
+* /backup, onde ela seria montada. Fiz um teste montando manualmente e, em seguida, editei o
+* arquivo /etc/fstab para que o sistema montasse o disco automaticamente sempre que fosse iniciado.
+* Por fim, reiniciei o Debian e confirmei que a partição já aparecia montada corretamente em /backup.). 
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'cat /etc/fstab' 
@@ -59,8 +62,12 @@ tmpfs            97M     0   97M   0% /run/user/1000
     ``` 
  
 #### Prática 8b65b431 02 (Livro-Texto p. 172) 
-* **Resumo da Prática:** (Descreva brevemente o que você fez: criação do diretório `cdrom` e 
-montagem manual do dispositivo `/dev/sr0` nele). 
+* **Resumo da Prática:** (Nessa prática, primeiro criei o diretório onde o conteúdo do CD
+* seria acessado, usando: mkdir /home/userlinux/cdrom.Depois identifiquei o dispositivo
+* do CD-ROM (/dev/sr0) e fiz a montagem manual com o comando: sudo mount /dev/sr0 /home/userlinux/cdrom.
+* Com isso, o conteúdo da imagem ISO passou a ficar disponível diretamente dentro da pasta cdrom, permitindo
+* navegar pelos arquivos normalmente. Por fim, confirmei a montagem usando lsblk e df para garantir que tudo
+* estava funcionando como esperado.). 
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'df -h' 
@@ -80,8 +87,11 @@ tmpfs            97M     0   97M   0% /run/user/1000
 ### Capítulo 7: Práticas de Processos 
  
 #### Prática prc0001 01 (Livro-Texto p. 233) 
-* **Resumo da Prática:** (Descreva brevemente o que você fez: execução dos comandos 
-`locale-gen`, `script`, a listagem de processos com `ps` e a filtragem por `python`). 
+* **Resumo da Prática:** (Comecei entrando na minha pasta home com cd ~/.
+* Depois rodei o comando sudo locale-gen "en_US.UTF-8" para gerar o locale solicitado.
+* Em seguida, usei o comando script para iniciar a gravação da sessão no terminal.
+* Com o ambiente pronto, listei os processos em execução usando ps e filtrei apenas os
+* relacionados ao Python, aplicando um pipe com grep python. 
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'cat /home/usuario/typescript' (após filtrar por 'python') 
@@ -91,8 +101,11 @@ tmpfs            97M     0   97M   0% /run/user/1000
 ### Capítulo 9: Práticas de Redes 
  
 #### Prática 0002 checkpoint03 (Livro-Texto p. 286) 
-* **Resumo da Prática:** (Descreva brevemente o que você fez: configuração de IP estático 
-editando o arquivo `/etc/network/interfaces` e reiniciando a máquina). 
+* **Resumo da Prática:** (Editei o arquivo /etc/network/interfaces para trocar a
+* configuração da placa de rede de DHCP para IP estático. No arquivo, defini manualmente o endereço IP,
+* máscara, broadcast, gateway e DNS seguindo o modelo mostrado no manual. Depois de salvar as alterações, reiniciei a
+* máquina para que a nova configuração entrasse em vigor. Ao voltar, conferi que a interface já estava usando o
+* IP estático configurado.). 
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'ip address show enp0s3' 
@@ -136,9 +149,12 @@ dns-nameservers 8.8.8.8
     ``` 
  
 #### Prática 0002 checkpoint04 (Livro-Texto p. 287) 
-* **Resumo da Prática:** (Descreva brevemente o que você fez: configuração da rede para 
-DHCP no arquivo e, em seguida, configuração de IP estático via comandos `ip address` e `ip 
-route`). 
+* **Resumo da Prática:** (Nessa prática, primeiro voltei a configuração da interface para DHCP editando o
+* arquivo /etc/network/interfaces, deixando a placa como iface enp0s3 inet dhcp, configurei um IP estático apenas
+* via linha de comando, sem alterar o arquivo. Usei ip address add para definir o endereço IP e a máscara diretamente na
+* interface, e depois usei ip route add para configurar a rota padrão, seguindo o modelo explicado na parte de
+* comandos de rede do manual. Ao final, conferi com ip addr e ip route que a interface estava usando o IP e o
+* gateway que eu tinha definido.). 
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'ip address show enp0s3' 
@@ -175,8 +191,9 @@ iface enp0s3 inet dhcp
     ``` 
  
 #### Prática 0002 checkpoint05 (Livro-Texto p. 288) 
-* **Resumo da Prática:** (Descreva brevemente o que você fez: download de um arquivo 
-usando `wget` para o diretório `/tmp`). 
+* **Resumo da Prática:** (Usei o comando wget para baixar um arquivo diretamente para o diretório /tmp.
+* Naveguei até /tmp e executei o wget seguido do link fornecido no exercício, exatamente Depois do download,
+* conferi o arquivo com ls para garantir que ele tinha sido salvo corretamente no /tmp.). 
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'cat /tmp/install.py' 
@@ -262,8 +279,9 @@ dispositivo de bloco (ex: `/dev/sda1`) está atualmente montado no diretório ra
         ```bash 
         /dev/sda1 
         ``` 
-    * *Breve Descrição:* (Explique o que a saída significa. O dispositivo que apareceu (ex: `/dev/sda1`) é 
-o que você esperava para a sua partição raiz? Por quê?) 
+    * *Breve Descrição:* (Isso significa que a partição raiz do meu sistema está sendo carregada a partir do dispositivo /dev/sda1.
+    * Essa era exatamente a saída esperada, porque normalmente, em instalações padrão do Debian em máquinas virtuais,
+    * o primeiro disco (sda) contém a partição principal onde o sistema foi instalado — e a partição sda1 geralmente é configurada como a raiz /.) 
  
 #### `getuuid.c` (Livro-Texto p. 161-162) 
  
@@ -332,8 +350,9 @@ o que você esperava para a sua partição raiz? Por quê?)
   Partição: /dev/sda1, UUID=64c5dfea-ac81-4541-881d-caa54ad4449d, LABEL=null, TYPE=ext4
   Partição: /dev/sda2, UUID=�W:g�U, LABEL=null, TYPE=�S:g�U 
         ``` 
-    * *Breve Descrição:* (A saída listou corretamente suas partições, como `sda1` e `sda5`? Os tipos 
-`ext4` e `swap` correspondem ao que você viu no `lsblk -f`?) 
+    * *Breve Descrição:* (Quando rodei o programa em /dev/sda, ele mostrou que o disco tem 3 partições. A sda1 apareceu como ext4,
+    * o que faz sentido porque é a partição raiz do sistema — exatamente como no lsblk -f.Eu realmente não entendi porque o sda2 bugou
+    * e apareceram estes  simbolos, e o sda5 mal apareceu, porém o código reconheceu que eram 3 partições.) 
  --- 
 ### Códigos do Capítulo 7 (Processos) 
  
@@ -356,7 +375,8 @@ completo de compilação do GCC (Pré-processamento, Compilação, Montagem, Lig
         ```bash 
         Aied é 10, Aied é TOP, tá no Youtube 
         ``` 
-    * *Breve Descrição:* (O programa imprimiu a string esperada no terminal?) 
+    * *Breve Descrição:* (Depois de compilar com gcc -o teste teste.c e executar, o programa simplesmente exibiu no
+    * terminal exatamente a frase escrita no printf, ou seja, funcionou como esperado — o código compilou sem erros.) 
  
 #### `myblkid.cpp` (Livro-Texto p. 186-187) 
  
@@ -393,7 +413,7 @@ completo de compilação do GCC (Pré-processamento, Compilação, Montagem, Lig
         ```bash 
         UUID=64c5dfea-ac81-4541-881d-caa54ad4449d
         ``` 
-    * *Breve Descrição:* (A saída corresponde ao UUID da sua partição `sda1` que você viu no `lsblk -f`?) 
+    * *Breve Descrição:* (Bate exatamente com o UUID mostrado pelo lsblk -f) 
  
 #### `calcfb.cpp` (Livro-Texto p. 187) 
 *(Esta prática requer dois arquivos)* 
@@ -426,8 +446,8 @@ número da sequência.
         ```bash 
         F4: 3 
         ``` 
-    * *Breve Descrição:* (A saída foi `F4: 3`? Explique por que o resultado é 3 e não 4, com base na 
-sequência de Fibonacci). 
+    * *Breve Descrição:* (o programa mostra 3 porque esse é realmente o quarto valor da sequência não é “4” porque
+    * Fibonacci cresce somando sempre um numero anterior aquele que esta sendo somado). 
  
 #### `thread.cpp` (Livro-Texto p. 190) 
  
@@ -463,8 +483,9 @@ concorrentemente com a thread principal (`main`).
         A 'main' executou...
 A thread está falando: Olá 
         ``` 
-    * *Breve Descrição:* (Qual linha imprimiu primeiro, "A 'main' executou..." ou "A thread está 
-falando..."? O que `t1.join()` faz?) 
+    * *Breve Descrição:* (Isso acontece porque a thread principal (main) continua rodando enquanto a thread t1 
+    é criada. O comando t1.join() faz a main esperar a thread terminar antes de encerrar o programa — garantindo que
+    a mensagem da thread apareça corretamente.) 
  
 #### `usefork.cpp` (Livro-Texto p. 191) 
  
@@ -519,8 +540,11 @@ memória separados.
         Processo pai: Variavel Global: 2 Variável Funcao: 20
 userlinux@debian:/tmp$ Processo filho:  Variavel Global: 3 Variável Funcao: 21 
         ``` 
-    * *Breve Descrição:* (Explique por que a `variavelGlobal` e a `variavelFuncao` têm valores diferentes 
-para o pai e para o filho. Qual processo (pai ou filho) terminou primeiro na sua execução?) 
+    * *Breve Descrição:* (Quando o programa chamou fork(), ele criou um processo filho
+    que passou a executar o mesmo código do pai, mas com uma cópia independente da memória. 
+    Isso prova que pai e filho não compartilham o mesmo espaço de memória.Na execução mostrada, 
+    o pai imprimiu primeiro, e logo depois apareceu a linha do processo filho, comportamento comum, 
+    já que o pai geralmente segue executando antes do filho terminar.) 
  
 #### `usewait.cpp` (Livro-Texto p. 193) 
  
@@ -568,8 +592,8 @@ Saindo do processo filho.
 PID do pai: 805
 PID do filho (retornado por wait): 806 
         ``` 
-    * *Breve Descrição:* (A linha "Pai esperando..." sempre aparece antes de "PID do pai..."? Por que o 
-PID do filho é impresso pelo processo-pai?) 
+    * *Breve Descrição:* (O PID do filho aparece porque wait() devolve exatamente o PID do 
+    processo-filho que acabou de terminar, permitindo ao pai saber qual filho ele aguardou.) 
  
 #### `usewait_exit.cpp` (Livro-Texto p. 194) 
  
@@ -619,8 +643,9 @@ WEXIT: 1
 PID do pai: 813
 PID do filho: 814 
         ``` 
-    * *Breve Descrição:* (Qual foi o status de saída impresso pelo `WEXIT`? Por que ele imprimiu esse 
-valor específico?) 
+    * *Breve Descrição:* (Esse valor aparece porque o processo-filho terminou executando exit(1). 
+    O pai, usando wait(&stat), capturou exatamente esse código de saída, e WEXITSTATUS(stat) apenas
+    extrai o número que o filho devolveu.) 
  
 #### `waitpid.cpp` (Livro-Texto p. 195) 
  
@@ -669,8 +694,10 @@ O filho 836 terminou com o status: 102
 O filho 837 terminou com o status: 103
 O filho 838 terminou com o status: 104 
         ``` 
-    * *Breve Descrição:* (Os PIDs dos filhos apareceram em ordem? Os códigos de status (100-104) 
-apareceram em ordem? O que `waitpid()` faz de diferente do `wait()`?) 
+    * *Breve Descrição:* (Na execução, cada filho terminou com os códigos 100 a 104, exatamente como definidos no exit(100 + i). 
+    Os PIDs e os status apareceram em ordem porque o pai usou waitpid() para esperar cada filho específico, na mesma sequência em que
+    foram criados.A ideia central é que, diferente de wait(), que espera qualquer filho, o waitpid() permite escolher qual PID aguardar, 
+    garantindo uma saída organizada e previsível.) 
  
 #### `system.cpp` (Livro-Texto p. 196) 
  
@@ -721,8 +748,8 @@ drwx------ 3 root      root       4096 Nov 27 20:19 systemd-private-c53c1f7f007c
 -rw-r--r-- 1 userlinux userlinux   773 Nov 27 22:19 waitpid.cpp
 Executado 
         ``` 
-    * *Breve Descrição:* (O que apareceu na tela? A lista de arquivos (`ls -l`) apareceu *antes* ou 
-*depois* da palavra "Executado"? Por quê?) 
+    * *Breve Descrição:* (O system("ls -l") faz o programa pausar, executar o comando externo até o fim, e só 
+    então continuar o código em C++. Ou seja, o ls -l sempre aparece antes do “Executado”.) 
  
 #### `pop.cpp` (Livro-Texto p. 197) 
  
@@ -788,8 +815,11 @@ Linha: -rw-r--r-- 1 userlinux userlinux   947 Nov 27 22:16 usewait_exit.cpp
 Linha: -rwxr-xr-x 1 userlinux userlinux 16792 Nov 27 22:19 waitpid
 Linha: -rw-r--r-- 1 userlinux userlinux   773 Nov 27 22:19 waitpid.cpp
         ``` 
-    * *Breve Descrição:* (Qual a diferença da saída deste programa para a saída do `system.cpp`? O 
-que o `popen` permitiu fazer com a saída do `ls -l`?) 
+    * *Breve Descrição:* (A principal diferença para o system.cpp é que aqui o programa não só executa o 
+    ls -l, mas também captura cada linha da saída.Com popen("ls -l", "r"), o ls -l é executado e o 
+    programa consegue ler sua saída linha por linha, Ou seja, enquanto system() apenas mostra o resultado 
+    direto no terminal, o popen() permitiu tratar a saída como um fluxo, possibilitando processar, alterar 
+    ou filtrar cada linha antes de imprimir.) 
  
 #### `receivesignal.cpp` (Livro-Texto p. 203) 
  
@@ -829,8 +859,9 @@ Dentro do laço de repetição infinito.
 Dentro do laço de repetição infinito.
 ^CProcesso será interrompido pelo sinal: (2). 
         ``` 
-    * *Breve Descrição:* (O que aconteceu quando você pressionou `Ctrl+C`? O programa fechou 
-silenciosamente ou imprimiu a mensagem da `signal_handler`? Qual é o número do sinal `SIGINT`?) 
+    * *Breve Descrição:* (Enquanto o programa rodava no loop infinito, ele ficou imprimindo a mensagem a cada segundo. 
+    Quando pressionei Ctrl+C, em vez de fechar imediatamente, ele chamou a função signal_handler e mostrou aquele final da saída.
+    Ou seja, o programa capturou o SIGINT antes de sair. O número do sinal SIGINT é 2.) 
  
 #### `ignoresignal.cpp` (Livro-Texto p. 204) 
  
