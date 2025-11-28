@@ -28,10 +28,34 @@ automática no `/etc/fstab` para o diretório `/backup`).
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'cat /etc/fstab' 
-    (Cole aqui a saída do seu 'cat /etc/fstab') 
+    # /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# systemd generates mount units based on this file, see systemd.mount(5).
+# Please run 'systemctl daemon-reload' after making changes here.
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda1 during installation
+UUID=64c5dfea-ac81-4541-881d-caa54ad4449d /               ext4    errors=remount-ro 0       1
+# swap was on /dev/sda5 during installation
+UUID=f1b28bbe-6cda-43e5-8c5f-0f79124630bb none            swap    sw              0       0
+/dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
+
+UUID=e20ab24b-3240-475f-98e0-a6d7e02c0a6b
+/backup ext4 defaults 0 0 
  
     # Saída do comando 'df -h' 
-    (Cole aqui a saída do seu 'df -h' mostrando o /backup montado) 
+    Filesystem      Size  Used Avail Use% Mounted on
+udev            462M     0  462M   0% /dev
+tmpfs            97M  548K   96M   1% /run
+/dev/sda1        19G  2.2G   16G  13% /
+tmpfs           481M     0  481M   0% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs            97M     0   97M   0% /run/user/1000
+/dev/sdb1       7.8G   24K  7.4G   1% /backup 
     ``` 
  
 #### Prática 8b65b431 02 (Livro-Texto p. 172) 
@@ -40,10 +64,17 @@ montagem manual do dispositivo `/dev/sr0` nele).
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'df -h' 
-    (Cole aqui a saída do seu 'df -h' mostrando o /dev/sr0 montado) 
+    Filesystem      Size  Used Avail Use% Mounted on
+udev            462M     0  462M   0% /dev
+tmpfs            97M  564K   96M   1% /run
+/dev/sda1        19G  2.2G   16G  13% /
+tmpfs           481M     0  481M   0% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs            97M     0   97M   0% /run/user/1000
+/dev/sr0        364K  364K     0 100% /home/userlinux/cdrom 
  
     # Saída do comando 'cat /home/usuario/cdrom/arquivo.txt' 
-    (Cole aqui a saída do cat, que deve ser "AIED VIVO") 
+    aiedonline 
     ``` 
  
 ### Capítulo 7: Práticas de Processos 
@@ -54,7 +85,7 @@ montagem manual do dispositivo `/dev/sr0` nele).
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'cat /home/usuario/typescript' (após filtrar por 'python') 
-    (Cole aqui a saída do seu 'ps aux | grep python' conforme capturado pelo 'typescript') 
+    userlin+     568  0.0  0.2   6336  2084 pts/1    S+   18:06   0:00 grep python 
     ``` 
  
 ### Capítulo 9: Práticas de Redes 
@@ -65,13 +96,43 @@ editando o arquivo `/etc/network/interfaces` e reiniciando a máquina).
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'ip address show enp0s3' 
-    (Cole aqui a saída do 'ip address' mostrando o IP 10.0.2.3) 
+    (1: lo: <LOOPBACK, UP, LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+inet 127.0.0.1/8 scope host lo
+valid_lft forever preferred_lft forever
+inet6 :: 1/128 scope host noprefixroute
+valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST, MULTICAST, UP, LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+link/ether 08:00:27:40:30:75 brd ff:ff:ff:ff:ff:ff
+inet 10.0.2.3/24 brd 10.0.2.255 scope global enp0s3
+valid_lft forever preferred_lft forever
+inet6 fd17:625c:f037:2:a00:27ff:fe40:3075/64 scope global dynamic mngtmpaddr
+valid_lft 86223sec preferred_lft 14223sec
+inet6 fe80 :: a00:27ff:fe40:3075/64 scope link
+valid_lft forever preferred_lft forever) 
  
     # Saída do comando 'ip route' 
-    (Cole aqui a saída do 'ip route' mostrando o gateway 10.0.2.2) 
+    (default via 10.0.2.2 dev enp0s3 onlink
+10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.3) 
  
     # Saída do comando 'cat /etc/network/interfaces' 
-    (Cole aqui o conteúdo do seu arquivo /etc/network/interfaces) 
+    # This file describes the network interfaces available on your system and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+Wallow-hotplug enp0s3
+auto enp0s3
+iface enp0s3 inet static
+address 10.0.2.3
+broadcast 10.0.2.255
+netmask 255.255.255.0
+gateway 10.0.2.2
+dns-nameservers 8.8.8.8 
     ``` 
  
 #### Prática 0002 checkpoint04 (Livro-Texto p. 287) 
@@ -81,13 +142,36 @@ route`).
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'ip address show enp0s3' 
-    (Cole aqui a saída do 'ip address' mostrando o IP 10.0.2.3) 
+    1: lo: <LOOPBACK, UP, LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+inet 127.0.0.1/8 scope host lo
+valid_lft forever preferred_lft forever
+inet6 :: 1/128 scope host noprefixroute
+valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST, MULTICAST, UP, LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+link/ether 08:00:27:40:30:75 brd ff:ff:ff:ff:ff:ff
+inet 10.0.2.3/24 brd 10.0.2.255 scope global enp0s3
+valid_lft forever preferred_lft forever
+inet6 fd17:625c: f037:2:a00:27ff:fe40:3075/64 scope global dynamic mngtmpaddr
+valid_lft 86384sec preferred_lft 14384sec 
  
     # Saída do comando 'ip route' 
-    (Cole aqui a saída do 'ip route' mostrando o gateway 10.0.2.2) 
+    detault via 10.0.2.2 dev enp0s3
+10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.3 
  
     # Saída do comando 'cat /etc/network/interfaces' 
-    (Cole aqui o conteúdo do seu /etc/network/interfaces mostrando a configuração DHCP) 
+    # This tile describes the network intertaces available on your system and how to activate them. For more intormation, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+#allow-hotplug enp0s3
+auto enp0s3
+iface enp0s3 inet dhcp 
     ``` 
  
 #### Prática 0002 checkpoint05 (Livro-Texto p. 288) 
@@ -96,7 +180,30 @@ usando `wget` para o diretório `/tmp`).
 * **Evidência de Validação:** 
     ```bash 
     # Saída do comando 'cat /tmp/install.py' 
-    (Cole aqui a saída do cat, que deve ser "aied.com.br") 
+    #!/usr/bin/python3
+import os;
+import sys
+import platform
+machine2bits = {'AMD64': 64, 'x86_64': 64, 'i386': 32, 'x86': 32, 'i686' : 32}
+os_version = machine2bits.get(platform.machine(), None)
+
+os.system("apt update");
+os.system("wget -O /tmp/libjsoncpp1_1.7.4-3_amd64.deb http://ftp.br.debian.org/debian/pool/main/libj/libjsoncpp/libjsoncpp1_1.7.4-3_amd64.deb");
+os.system("dpkg -i /tmp/libjsoncpp1_1.7.4-3_amd64.deb");
+#os.system("apt install libjsoncpp-dev -y");
+os.system("apt install g++ -y");
+os.system("apt install libcurl4-openssl-dev -y");
+os.system("rm -r /etc/aied");
+os.system("rm -r /etc/aied");
+os.system("mkdir /etc/aied");
+os.system("wget -O /tmp/aied.tar.gz http://www.aied.com.br/linux/download/aied_"+ str(os_version) +".tar.gz" );
+os.system("tar -xzvf /tmp/aied.tar.gz -C /etc/aied/");
+#os.system("rm /usr/sbin/aied");
+#os.system("rm /usr/bin/aied.py");
+os.system("ln -s /etc/aied/aied_"+ str(os_version) +" /usr/bin/aied");
+os.system("chmod +x /etc/aied/aied_"+ str ( os_version ) + "   " );
+
+#OK, será usado para isntalacao do aied.com.br 
     ``` 
  --- 
  
@@ -153,7 +260,7 @@ dispositivo de bloco (ex: `/dev/sda1`) está atualmente montado no diretório ra
     * *Comando de Compilação:* `g++ -o devices devices.cpp -std=c++17` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal ao rodar ./devices) 
+        /dev/sda1 
         ``` 
     * *Breve Descrição:* (Explique o que a saída significa. O dispositivo que apareceu (ex: `/dev/sda1`) é 
 o que você esperava para a sua partição raiz? Por quê?) 
@@ -221,7 +328,9 @@ o que você esperava para a sua partição raiz? Por quê?)
     * *Comando de Compilação:* `gcc -o getuuid getuuid.c -lblkid` 
     * *Saída da Execução:* (Execute com `sudo ./getuuid /dev/sda`) 
         ```bash 
-        (Cole aqui a saída exata do seu terminal) 
+        Número de partições em /dev/sda: 3
+  Partição: /dev/sda1, UUID=64c5dfea-ac81-4541-881d-caa54ad4449d, LABEL=null, TYPE=ext4
+  Partição: /dev/sda2, UUID=�W:g�U, LABEL=null, TYPE=�S:g�U 
         ``` 
     * *Breve Descrição:* (A saída listou corretamente suas partições, como `sda1` e `sda5`? Os tipos 
 `ext4` e `swap` correspondem ao que você viu no `lsblk -f`?) 
@@ -245,7 +354,7 @@ completo de compilação do GCC (Pré-processamento, Compilação, Montagem, Lig
     * *Comando de Compilação:* `gcc -o teste teste.c` 
     * *Saída da Execução:* 
         ```bash 
-        (Cole aqui a saída exata do seu terminal ao rodar ./teste) 
+        Aied é 10, Aied é TOP, tá no Youtube 
         ``` 
     * *Breve Descrição:* (O programa imprimiu a string esperada no terminal?) 
  
