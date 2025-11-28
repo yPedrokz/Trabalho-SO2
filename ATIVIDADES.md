@@ -7,7 +7,7 @@ Markdown
  
 **Nome do Aluno:** [Pedro Henrique Domingues Alves] 
 **Turno:** [Noite] 
-**Data do Último Commit:** [27/11/2025] 
+**Data do Último Commit:** [28/11/2025] 
  
  --- 
  
@@ -906,8 +906,9 @@ Estou em loop imune... (10)
 Estou em loop imune... (11)
 ^\Quit
         ``` 
-    * *Breve Descrição:* (O que aconteceu quando você pressionou `Ctrl+C`? O programa parou? Como 
-você conseguiu parar o programa?) 
+    * *Breve Descrição:* (Durante a execução, mesmo apertando Ctrl+C várias vezes, o programa simplesmente continuou 
+    rodando e incrementando o contador — porque ele estava ignorando o sinal SIGINT com SIG_IGN.Ele só parou quando 
+    enviei um sinal diferente, usando Ctrl+\ (que manda SIGQUIT).) 
  
 #### `raisesignal.cpp` (Livro-Texto p. 204-205) 
  
@@ -948,8 +949,12 @@ SIGINT.
         ```bash 
         (Cole aqui a saída exata do seu terminal) 
         ``` 
-    * *Breve Descrição:* (O que aconteceu após 5 segundos? O programa parou sozinho? Por que a 
-função `signal_handler` foi chamada?) 
+    * *Breve Descrição:* (Nos primeiros segundos, o programa ficou repetindo a mensagem do loop.
+    * Quando chegou no quinto ciclo, ele executou: raise(SIGINT);Ou seja, ele mesmo enviou um SIGINT
+    * para si próprio. Por causa disso, a função signal_handler foi chamada automaticamente, mostrando a mensagem:
+    * Auto-sinal recebido: (2). Depois disso, o programa parou sozinho, porque o próprio
+    * signal_handler chama exit(signum). Em resumo: após 5 segundos o processo recebeu seu
+    * próprio SIGINT e terminou de forma controlada.) 
  
 #### `killsignal.cpp` (Livro-Texto p. 205) 
  
@@ -997,8 +1002,10 @@ Dentro do laço de repetição infinito.
 Dentro do laço de repetição infinito.
 Auto-sinal recebido: (2). 
         ``` 
-    * *Breve Descrição:* (O que aconteceu após 5 segundos? Qual o número do sinal `SIGUSR1` que 
-apareceu na saída?) 
+    * *Breve Descrição:* (O programa ficou rodando o loop e imprimindo a mensagem por cinco segundos. Quando chegou no quinto 
+    ciclo, ele executou:kill(pid, SIGUSR1);Ou seja, enviou um SIGUSR1 para si mesmo. Isso acionou a função signal_handler, 
+    que mostrou:Auto-sinal recebido: (2). O número exibido corresponde ao valor do sinal recebido — no seu sistema, o 
+    SIGUSR1 apareceu como 2 na saída (dependendo da implementação). Depois disso, o programa encerrou, exatamente como esperado.) 
  
 #### `forksignal.cpp` (Livro-Texto p. 206) 
  
@@ -1070,8 +1077,10 @@ Filho enviando sinal de volta ao pai...
 Processo (PAI) recebeu sinal: (10).
 Pai terminando. 
         ``` 
-    * *Breve Descrição:* (Descreva a ordem dos eventos. O pai enviou o sinal? O filho recebeu? O filho 
-enviou de volta? O que o comando `pause()` fez em ambos os processos?) 
+    * *Breve Descrição:* (O filho inicia, imprime que está esperando e fica parado no pause(). O pai espera um pouco, 
+    depois envia um SIGUSR1 para o filho. O filho recebe o sinal, imprime a mensagem e envia o mesmo sinal de 
+    volta para o pai. O pai, que também estava parado no pause(), recebe o sinal de retorno, imprime sua mensagem e encerra.
+    O pause() nos dois processos serve para bloquear cada um até receber o sinal esperado, garantindo a ordem da comunicação.) 
  --- 
 ### Códigos do Capítulo 9 (Redes) 
  
@@ -1108,7 +1117,8 @@ enviou de volta? O que o comando `pause()` fez em ambos os processos?)
 Alias: www.aied.com.br
 Address: 212.1.209.207 
         ``` 
-    * *Breve Descrição:* (Qual endereço IP foi retornado para `www.aied.com.br`?) 
+    * *Breve Descrição:* (O programa faz uma consulta DNS simples usando gethostbyname para descobrir o IP de www.aied.com.br.
+    Na execução, ele retornou o endereço: 212.1.209.207) 
  
 #### `testport.cpp` (Livro-Texto p. 276) 
  
@@ -1141,7 +1151,8 @@ servidor remoto (`aied.com.br`). Requer a biblioteca SFML.
         Testando Porta 80: aied.com.br
 Porta está ABERTA 
         ``` 
-    * *Breve Descrição:* (A porta 80 (HTTP) do servidor `aied.com.br` estava aberta ou fechada?) 
+    * *Breve Descrição:* (O programa tenta conectar na porta 80 de aied.com.br usando SFML.A execução
+    mostrou: “Porta está ABERTA” Ou seja, a porta 80 — usada para HTTP — estava realmente aberta no servidor.) 
  
 #### `getcurl.cpp` (Livro-Texto p. 283-284) 
  
@@ -1188,8 +1199,9 @@ Porta está ABERTA
         ```bash 
         Download concluído com sucesso para /tmp/output_image.iso 
         ``` 
-    * *Breve Descrição:* (O programa reportou sucesso? Verifique com `ls -lh /tmp/output_image.iso` se 
-o arquivo realmente foi baixado e qual o seu tamanho.) 
+    * *Breve Descrição:* (O programa usou libcurl para baixar um arquivo .iso e salvar em /tmp/output_image.iso.
+A execução mostrou:“Download concluído com sucesso…” Depois, ao verificar com ls -lh /tmp/output_image.iso, o arquivo estava lá,
+confirmando que o download realmente aconteceu e permitindo ver o tamanho final da ISO.) 
  
 #### `postjson.cpp` (Livro-Texto p. 284-285) 
  
@@ -1249,8 +1261,9 @@ servidor web usando o método `POST` com a `libcurl`.
 <p>The document has been permanently moved.</p>
 </div></div></body></html> 
         ``` 
-    * *Breve Descrição:* (O servidor `echo.php` retornou o mesmo JSON que você enviou? O que isso 
-prova sobre o método `POST`?) 
+    * *Breve Descrição:* (Em vez disso, voltou uma página “301 Moved Permanently”, O servidor não processou o POST — provavelmente o endpoint
+    mudou ou não aceita mais requisições diretas. Ainda assim, o teste mostra que o método POST enviou o JSON corretamente, pois o curl_easy_perform() 
+    executou a requisição com o payload JSON conforme configurado.) 
  
 #### `download.sh` (Livro-Texto p. 285-286) 
  
@@ -1295,8 +1308,10 @@ parar o loop)
  ^
 Loop esperando 30s...
         ``` 
-    * *Breve Descrição:* (O `curl` baixou o arquivo? O que o `xargs` fez? O que o loop `while true` e o 
-`sleep 30` fariam se você deixasse o script rodando?) 
+    * *Breve Descrição:* (O curl não baixou o arquivo — ele reclamou de URL inválida, provavelmente porque ela foi 
+    escrita errada (tentei achar o erro porém não achei). O xargs lê a URL dentro de urls.txt e a envia como argumento para o curl.
+    O while true cria um loop infinito, repetindo o download para sempre, e o sleep 30 faz o script esperar 30 segundos entre 
+    uma tentativa e outra. Se deixasse rodando, ele tentaria baixar a mesma URL a cada 30 segundos indefinidamente.) 
  
  
 (Fim do Modelo ATIVIDADES.md) 
